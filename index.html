@@ -4,21 +4,122 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>since 0808</title>
-</head>
 
-<body>
-  <h1>since 0808 💍</h1>
-  <p>ふたりの部屋へようこそ。</p>
-
-  <button onclick="showMessage()">💌 今日のメッセージ</button>
-
-  <p id="message"></p>
-
-  <script>
-    function showMessage() {
-      document.getElementById("message").textContent =
-        "今日も一緒にいてくれてありがとう。";
+  <style>
+    * {
+      box-sizing: border-box;
     }
-  </script>
-</body>
-</html>
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      background: linear-gradient(180deg, #fffaf7 0%, #fceff1 100%);
+      color: #594b4b;
+      text-align: center;
+    }
+
+    .container {
+      width: min(92%, 500px);
+      margin: 0 auto;
+      padding: 45px 0 60px;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      letter-spacing: 4px;
+      color: #b79a9a;
+      margin-bottom: 5px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-family: Georgia, serif;
+      font-weight: normal;
+      font-size: 36px;
+      color: #8f6d72;
+    }
+
+    .welcome {
+      margin-bottom: 35px;
+      font-size: 14px;
+      color: #9b8585;
+    }
+
+    .counter-area {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .counter {
+      background: rgba(255,255,255,0.8);
+      padding: 22px 10px;
+      border-radius: 20px;
+      box-shadow: 0 5px 20px rgba(120,80,80,0.08);
+    }
+
+    .counter-title {
+      font-size: 12px;
+      color: #aa8c8c;
+      margin-bottom: 8px;
+    }
+
+    .days {
+      font-family: Georgia, serif;
+      font-size: 30px;
+      color: #9c747a;
+    }
+
+    .days-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: #bca4a4;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.85);
+      border-radius: 24px;
+      padding: 25px 20px;
+      margin: 15px 0;
+      box-shadow: 0 5px 20px rgba(120,80,80,0.08);
+    }
+
+    .card h2 {
+      margin-top: 0;
+      font-size: 17px;
+      font-weight: normal;
+    }
+
+    button {
+      border: none;
+      background: #d8aeb4;
+      color: white;
+      padding: 13px 24px;
+      border-radius: 30px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    button:active {
+      transform: scale(0.96);
+    }
+
+    #fortuneResult {
+      margin: 20px 0 0;
+      line-height: 1.8;
+      min-height: 25px;
+    }
+
+    .fortune-name {
+      font-size: 20px;
+      color: #a6777e;
+      font-weight: bold;
+    }
+
+    .ring-area {
+      margin-top: 40px;
+    }
+
+   
