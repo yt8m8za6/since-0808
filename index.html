@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="仲良しふたりの今までとこれから💐">
-  <title>谷井田⇔大山🤍❤</title>
+  <title>since 0808-谷井田⇔大山🤍❤</title>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -20,13 +20,47 @@
       margin: 0 auto;
       padding: 45px 0 60px;
     }
+    .photo-trigger {
+      display: block;
+      width: 100%;
+      padding: 0;
+      margin: 0 0 28px;
+      border: 0;
+      border-radius: 24px;
+      background: transparent;
+      box-shadow: 0 5px 20px rgba(120,80,80,0.10);
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .photo-trigger:focus-visible { outline: 3px solid #a6777e; outline-offset: 4px; }
     .top-photo {
       display: block;
       width: 100%;
       height: auto;
-      margin-bottom: 28px;
       border-radius: 24px;
-      box-shadow: 0 5px 20px rgba(120,80,80,0.10);
+    }
+    .falling-emoji {
+      position: fixed;
+      top: 0;
+      z-index: 20;
+      pointer-events: none;
+      user-select: none;
+      line-height: 1;
+      animation: emoji-fall var(--duration) ease-in var(--delay) both;
+    }
+    @keyframes emoji-fall {
+      from { opacity: 0; transform: translate3d(0, -45px, 0) rotate(-20deg); }
+      12% { opacity: 1; }
+      85% { opacity: 1; }
+      to { opacity: 0; transform: translate3d(var(--drift), calc(100vh + 60px), 0) rotate(45deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .falling-emoji { animation: emoji-glow 0.7s ease-out both; }
+      @keyframes emoji-glow {
+        from { opacity: 0; transform: scale(0.6); }
+        45% { opacity: 1; transform: scale(1.2); }
+        to { opacity: 0; transform: scale(1); }
+      }
     }
     h1 {
       margin: 0 0 8px;
@@ -51,6 +85,13 @@
     .counter-title { font-size: 12px; color: #aa8c8c; margin-bottom: 8px; }
     .days { font-family: Georgia, serif; font-size: 30px; color: #9c747a; }
     .days-label { font-size: 10px; letter-spacing: 2px; color: #bca4a4; }
+    .counter-date {
+      display: block;
+      margin-top: 9px;
+      font-family: Georgia, serif;
+      font-size: 12px;
+      color: #aa8c8c;
+    }
     .card {
       background: rgba(255,255,255,0.85);
       border-radius: 24px;
@@ -121,19 +162,23 @@
 </head>
 <body>
   <main class="container">
-    <img src="top.jpg" alt="ふたりの思い出" class="top-photo">
     <h1>since 0808</h1>
-    <div class="welcome">今日も来てくれてありがとう！</div>
+    <button type="button" class="photo-trigger" id="photoTrigger" aria-label="ふたりの写真。タップすると絵文字が降るよ">
+      <img src="top.jpg" alt="ふたりの思い出" class="top-photo">
+    </button>
+    <div class="welcome">仲良しふたりの今までとこれから💐</div>
     <section class="counter-area">
       <div class="counter">
         <div class="counter-title">出会ってから</div>
         <div class="days" id="meetDays">0</div>
         <div class="days-label">DAYS</div>
+        <time class="counter-date" datetime="2022-08-08">2022.08.08</time>
       </div>
       <div class="counter">
         <div class="counter-title">付き合ってから</div>
         <div class="days" id="loveDays">0</div>
         <div class="days-label">DAYS</div>
+        <time class="counter-date" datetime="2022-09-09">2022.09.09</time>
       </div>
     </section>
     <section class="card">
@@ -161,7 +206,7 @@
   </div>
   <script>
     const meetDate = new Date(2022, 7, 8);
-    const loveDate = new Date(2022, 8, 8);
+    const loveDate = new Date(2022, 8, 9);
 
     function calculateDays(startDate) {
       const now = new Date();
@@ -173,6 +218,26 @@
       calculateDays(meetDate).toLocaleString();
     document.getElementById("loveDays").textContent =
       calculateDays(loveDate).toLocaleString();
+
+    const photoTrigger = document.getElementById("photoTrigger");
+    const photoEmojis = ["💐", "🤍", "❤", "🌟", "💍", "✨"];
+    photoTrigger.addEventListener("click", () => {
+      const bounds = photoTrigger.getBoundingClientRect();
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      for (let i = 0; i < (reducedMotion ? 8 : 24); i++) {
+        const piece = document.createElement("span");
+        piece.className = "falling-emoji";
+        piece.textContent = photoEmojis[Math.floor(Math.random() * photoEmojis.length)];
+        piece.setAttribute("aria-hidden", "true");
+        piece.style.left = `${bounds.left + Math.random() * bounds.width}px`;
+        piece.style.fontSize = `${18 + Math.random() * 15}px`;
+        piece.style.setProperty("--drift", `${Math.random() * 100 - 50}px`);
+        piece.style.setProperty("--delay", `${reducedMotion ? 0 : Math.random() * 0.7}s`);
+        piece.style.setProperty("--duration", `${2.5 + Math.random() * 1.2}s`);
+        piece.addEventListener("animationend", () => piece.remove(), { once: true });
+        document.body.appendChild(piece);
+      }
+    });
 
     const fortunes = [
       { name: "大吉", message: "今日はいいことありそう！いっぱい笑って過ごそう！" },
