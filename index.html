@@ -66,7 +66,7 @@
       margin: 0 0 8px;
       font-family: Georgia, serif;
       font-weight: normal;
-      font-size: clamp(22px, 6vw, 36px);
+      font-size: 36px;
       color: #8f6d72;
     }
     .welcome { margin-bottom: 35px; font-size: 14px; color: #9b8585; }
@@ -100,6 +100,7 @@
       box-shadow: 0 5px 20px rgba(120,80,80,0.08);
     }
     .card h2 { margin-top: 0; font-size: 17px; font-weight: normal; }
+    .fortune-hint { font-size: 13px; color: #9b8585; }
     button {
       border: none;
       background: #d8aeb4;
@@ -163,7 +164,7 @@
 </head>
 <body>
   <main class="container">
-    <h1>since 0808-谷井田⇔大山</h1>
+    <h1>since 0808</h1>
     <button type="button" class="photo-trigger" id="photoTrigger" aria-label="ふたりの写真。タップすると絵文字が降るよ">
       <img src="top.jpg" alt="ふたりの思い出" class="top-photo">
     </button>
@@ -184,7 +185,7 @@
     </section>
     <section class="card">
       <h2>今日の運勢🔮</h2>
-      <p>1日1回の運試し🌟</p>
+      <p class="fortune-hint">1日1回の運試し🌟結果は全10種類以上！？</p>
       <button type="button" id="fortuneButton" onclick="drawFortune()">引いてみる！</button>
       <div id="fortuneResult"></div>
     </section>
@@ -247,7 +248,11 @@
       { name: "吉", message: "ぼちぼち良い感じ！山田さんから面白いことが聞けるかも🤭" },
       { name: "吉", message: "そこそこ良い運勢！ベッドでポテチ食べてもこぼさない😤" },
       { name: "超大吉💮", message: "生きてるだけで大優勝💐恋人に何かおねだりしてみよう😆" },
-      { name: "凶", message: "ヤバい😱寝る前のおトイレを忘れずに😖🚽" }
+      { name: "凶", message: "ヤバい😱寝る前のおトイレを忘れずに😖🚽" },
+      { name: "凶", message: "気を付けて😱カナガワの外に大山からの刺客がいるかも🤭" },
+      { name: "小吉", message: "ちょっといまいい？でもれおちがご飯モリモリ食べるかも🐶" },
+      { name: "中吉", message: "良い運勢🎀欲しかったものがZOZOで安くなってるかも！？" },
+      { name: "小吉", message: "疲れ気味？でも大丈夫🍵こんなときはスパダリがいつもより優しいよ😆" }
     ];
 
     const fortuneStorageKey = "since0808-fortune-v1";
