@@ -66,7 +66,7 @@
       margin: 0 0 8px;
       font-family: Georgia, serif;
       font-weight: normal;
-      font-size: 36px;
+      font-size: clamp(22px, 6vw, 36px);
       color: #8f6d72;
     }
     .welcome { margin-bottom: 35px; font-size: 14px; color: #9b8585; }
@@ -110,6 +110,7 @@
       cursor: pointer;
     }
     button:active { transform: scale(0.96); }
+    button:disabled { opacity: 0.65; cursor: default; }
     #fortuneResult { margin: 20px 0 0; line-height: 1.8; min-height: 25px; }
     .fortune-name { font-size: 20px; color: #a6777e; font-weight: bold; }
     .ring-area { margin-top: 40px; }
@@ -162,7 +163,7 @@
 </head>
 <body>
   <main class="container">
-    <h1>since 0808</h1>
+    <h1>since 0808-谷井田⇔大山</h1>
     <button type="button" class="photo-trigger" id="photoTrigger" aria-label="ふたりの写真。タップすると絵文字が降るよ">
       <img src="top.jpg" alt="ふたりの思い出" class="top-photo">
     </button>
@@ -182,9 +183,9 @@
       </div>
     </section>
     <section class="card">
-      <h2>🔮 今日のおみくじ</h2>
-      <p>今日のふたりはどんな日かな？</p>
-      <button type="button" onclick="drawFortune()">引いてみる！</button>
+      <h2>今日の運勢🔮</h2>
+      <p>1日1回の運試し🌟</p>
+      <button type="button" id="fortuneButton" onclick="drawFortune()">引いてみる！</button>
       <div id="fortuneResult"></div>
     </section>
     <div class="ring-area">
@@ -240,21 +241,66 @@
     });
 
     const fortunes = [
-      { name: "大吉", message: "今日はいいことありそう！いっぱい笑って過ごそう！" },
-      { name: "大吉", message: "好きなことを思いっきり楽しむ日！ゲームするのもいいかも！" },
-      { name: "中吉", message: "何気ない時間が一番楽しい日。のんびり話そ！" },
-      { name: "中吉", message: "ちょっと疲れたら休憩！無理しないのも大事だよ！" },
-      { name: "小吉", message: "今日はゆっくりいこう！ちゃんと休めたら100点！" },
-      { name: "吉", message: "おいしいものを食べると運気アップ！おやつ食べよー！" },
-      { name: "吉", message: "相手にひとこと話しかけると、ちょっといいことがあるかも！" },
-      { name: "超大吉！", message: "今日は最強！ふたりで楽しいことしよー！！" }
+      { name: "大吉", message: "最高の運勢！良いことしかない✌" },
+      { name: "中吉", message: "かなり良い感じ！電車で頭ゴツンしない😆" },
+      { name: "中吉", message: "結構良い運勢✨️定時を過ぎても起きてられるかも！？😳" },
+      { name: "吉", message: "ぼちぼち良い感じ！山田さんから面白いことが聞けるかも🤭" },
+      { name: "吉", message: "そこそこ良い運勢！ベッドでポテチ食べてもこぼさない😤" },
+      { name: "超大吉💮", message: "生きてるだけで大優勝💐恋人に何かおねだりしてみよう😆" },
+      { name: "凶", message: "ヤバい😱寝る前のおトイレを忘れずに😖🚽" }
     ];
 
-    function drawFortune() {
-      const fortune = fortunes[Math.floor(Math.random() * fortunes.length)];
-      document.getElementById("fortuneResult").innerHTML =
-        '<div class="fortune-name">' + fortune.name + '</div>' + fortune.message;
+    const fortuneStorageKey = "since0808-fortune-v1";
+    const fortuneButton = document.getElementById("fortuneButton");
+    const fortuneResult = document.getElementById("fortuneResult");
+
+    function fortuneDay() {
+      return new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit"
+      }).format(new Date());
     }
+
+    function savedFortune() {
+      try { return JSON.parse(localStorage.getItem(fortuneStorageKey) || "null"); }
+      catch { return null; }
+    }
+
+    function showFortune(fortune) {
+      fortuneResult.replaceChildren();
+      const name = document.createElement("div");
+      name.className = "fortune-name";
+      name.textContent = fortune.name;
+      fortuneResult.append(name, document.createTextNode(fortune.message));
+      fortuneButton.disabled = true;
+      fortuneButton.textContent = "今日はもう引いたよ🌟";
+    }
+
+    function refreshFortune() {
+      const saved = savedFortune();
+      if (saved && saved.day === fortuneDay() &&
+          Number.isInteger(saved.index) && fortunes[saved.index]) {
+        showFortune(fortunes[saved.index]);
+      } else {
+        fortuneResult.replaceChildren();
+        fortuneButton.disabled = false;
+        fortuneButton.textContent = "引いてみる！";
+      }
+    }
+
+    function drawFortune() {
+      if (savedFortune()?.day === fortuneDay()) return;
+      const index = Math.floor(Math.random() * fortunes.length);
+      try {
+        localStorage.setItem(fortuneStorageKey, JSON.stringify({ day: fortuneDay(), index }));
+      } catch {
+        fortuneResult.textContent = "保存できなかったよ。ブラウザーの設定を確認してね。";
+        return;
+      }
+      showFortune(fortunes[index]);
+    }
+
+    refreshFortune();
+    setInterval(refreshFortune, 60000);
 
     function openSecret() {
       document.getElementById("secret").style.display = "flex";
