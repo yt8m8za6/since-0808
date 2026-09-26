@@ -3,13 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>since 0808</title>
-
+  <meta name="description" content="仲良しふたりの今までとこれから💐">
+  <title>谷井田⇔大山🤍❤</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       min-height: 100vh;
@@ -18,20 +15,19 @@
       color: #594b4b;
       text-align: center;
     }
-
     .container {
       width: min(92%, 500px);
       margin: 0 auto;
       padding: 45px 0 60px;
     }
-
-    .subtitle {
-      font-size: 12px;
-      letter-spacing: 4px;
-      color: #b79a9a;
-      margin-bottom: 5px;
+    .top-photo {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin-bottom: 28px;
+      border-radius: 24px;
+      box-shadow: 0 5px 20px rgba(120,80,80,0.10);
     }
-
     h1 {
       margin: 0 0 8px;
       font-family: Georgia, serif;
@@ -39,45 +35,22 @@
       font-size: 36px;
       color: #8f6d72;
     }
-
-    .welcome {
-      margin-bottom: 35px;
-      font-size: 14px;
-      color: #9b8585;
-    }
-
+    .welcome { margin-bottom: 35px; font-size: 14px; color: #9b8585; }
     .counter-area {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
       margin-bottom: 28px;
     }
-
     .counter {
       background: rgba(255,255,255,0.8);
       padding: 22px 10px;
       border-radius: 20px;
       box-shadow: 0 5px 20px rgba(120,80,80,0.08);
     }
-
-    .counter-title {
-      font-size: 12px;
-      color: #aa8c8c;
-      margin-bottom: 8px;
-    }
-
-    .days {
-      font-family: Georgia, serif;
-      font-size: 30px;
-      color: #9c747a;
-    }
-
-    .days-label {
-      font-size: 10px;
-      letter-spacing: 2px;
-      color: #bca4a4;
-    }
-
+    .counter-title { font-size: 12px; color: #aa8c8c; margin-bottom: 8px; }
+    .days { font-family: Georgia, serif; font-size: 30px; color: #9c747a; }
+    .days-label { font-size: 10px; letter-spacing: 2px; color: #bca4a4; }
     .card {
       background: rgba(255,255,255,0.85);
       border-radius: 24px;
@@ -85,13 +58,7 @@
       margin: 15px 0;
       box-shadow: 0 5px 20px rgba(120,80,80,0.08);
     }
-
-    .card h2 {
-      margin-top: 0;
-      font-size: 17px;
-      font-weight: normal;
-    }
-
+    .card h2 { margin-top: 0; font-size: 17px; font-weight: normal; }
     button {
       border: none;
       background: #d8aeb4;
@@ -101,27 +68,10 @@
       font-size: 14px;
       cursor: pointer;
     }
-
-    button:active {
-      transform: scale(0.96);
-    }
-
-    #fortuneResult {
-      margin: 20px 0 0;
-      line-height: 1.8;
-      min-height: 25px;
-    }
-
-    .fortune-name {
-      font-size: 20px;
-      color: #a6777e;
-      font-weight: bold;
-    }
-
-    .ring-area {
-      margin-top: 40px;
-    }
-
+    button:active { transform: scale(0.96); }
+    #fortuneResult { margin: 20px 0 0; line-height: 1.8; min-height: 25px; }
+    .fortune-name { font-size: 20px; color: #a6777e; font-weight: bold; }
+    .ring-area { margin-top: 40px; }
     .ring {
       font-size: 38px;
       cursor: pointer;
@@ -129,18 +79,8 @@
       transition: 0.3s;
       user-select: none;
     }
-
-    .ring:active {
-      transform: scale(1.3) rotate(10deg);
-    }
-
-    .hint {
-      font-size: 10px;
-      color: #c7b5b5;
-      margin-top: 5px;
-      letter-spacing: 1px;
-    }
-
+    .ring:active { transform: scale(1.3) rotate(10deg); }
+    .hint { font-size: 10px; color: #c7b5b5; margin-top: 5px; letter-spacing: 1px; }
     .secret {
       display: none;
       position: fixed;
@@ -151,7 +91,6 @@
       padding: 30px;
       z-index: 10;
     }
-
     .secret-box {
       width: min(100%, 400px);
       background: #fffaf7;
@@ -159,36 +98,18 @@
       padding: 40px 25px;
       animation: appear 0.7s ease;
     }
-
-    .secret-rings {
-      font-size: 42px;
-      margin-bottom: 20px;
-    }
-
-    .secret-message {
-      line-height: 2;
-      color: #765e62;
-      font-size: 15px;
-    }
-
+    .secret-rings { font-size: 42px; margin-bottom: 20px; }
+    .secret-message { line-height: 2; color: #765e62; font-size: 15px; }
     .close {
       margin-top: 25px;
       background: transparent;
       color: #aa858b;
       border: 1px solid #d8b9bd;
     }
-
     @keyframes appear {
-      from {
-        opacity: 0;
-        transform: scale(0.85);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
+      from { opacity: 0; transform: scale(0.85); }
+      to { opacity: 1; transform: scale(1); }
     }
-
     footer {
       margin-top: 40px;
       font-family: Georgia, serif;
@@ -198,150 +119,84 @@
     }
   </style>
 </head>
-
 <body>
-
   <main class="container">
-
-    <div class="subtitle">OUR LITTLE ROOM</div>
+    <img src="top.jpg" alt="ふたりの思い出" class="top-photo">
     <h1>since 0808</h1>
     <div class="welcome">今日も来てくれてありがとう！</div>
-
     <section class="counter-area">
-
       <div class="counter">
         <div class="counter-title">出会ってから</div>
         <div class="days" id="meetDays">0</div>
         <div class="days-label">DAYS</div>
       </div>
-
       <div class="counter">
         <div class="counter-title">付き合ってから</div>
         <div class="days" id="loveDays">0</div>
         <div class="days-label">DAYS</div>
       </div>
-
     </section>
-
     <section class="card">
       <h2>🔮 今日のおみくじ</h2>
       <p>今日のふたりはどんな日かな？</p>
-      <button onclick="drawFortune()">引いてみる！</button>
+      <button type="button" onclick="drawFortune()">引いてみる！</button>
       <div id="fortuneResult"></div>
     </section>
-
     <div class="ring-area">
       <div class="ring" onclick="openSecret()">💍</div>
       <div class="hint">OUR PROMISE</div>
     </div>
-
-    <footer>
-      2022.08.08 — FOREVER
-    </footer>
-
+    <footer>2022.08.08 — FOREVER</footer>
   </main>
-
   <div class="secret" id="secret">
     <div class="secret-box">
       <div class="secret-rings">💍 ♡ 💍</div>
-
       <div class="secret-message">
         たくさん笑って、たくさん話して、<br>
         これからもふたりらしくいようね。<br><br>
         今日も一緒にいてくれてありがとう！
       </div>
-
-      <button class="close" onclick="closeSecret()">もどる</button>
+      <button type="button" class="close" onclick="closeSecret()">もどる</button>
     </div>
   </div>
-
   <script>
-
-    // 出会った日
     const meetDate = new Date(2022, 7, 8);
-
-    // 付き合った日
     const loveDate = new Date(2022, 8, 8);
 
     function calculateDays(startDate) {
       const now = new Date();
-
-      const today = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate()
-      );
-
-      const diff = today - startDate;
-
-      return Math.floor(diff / (1000 * 60 * 60 * 24));
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      return Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
     }
 
     document.getElementById("meetDays").textContent =
       calculateDays(meetDate).toLocaleString();
-
     document.getElementById("loveDays").textContent =
       calculateDays(loveDate).toLocaleString();
 
-
-    // おみくじ
     const fortunes = [
-      {
-        name: "大吉",
-        message: "今日はいいことありそう！いっぱい笑って過ごそう！"
-      },
-      {
-        name: "大吉",
-        message: "好きなことを思いっきり楽しむ日！ゲームするのもいいかも！"
-      },
-      {
-        name: "中吉",
-        message: "何気ない時間が一番楽しい日。のんびり話そ！"
-      },
-      {
-        name: "中吉",
-        message: "ちょっと疲れたら休憩！無理しないのも大事だよ！"
-      },
-      {
-        name: "小吉",
-        message: "今日はゆっくりいこう！ちゃんと休めたら100点！"
-      },
-      {
-        name: "吉",
-        message: "おいしいものを食べると運気アップ！おやつ食べよー！"
-      },
-      {
-        name: "吉",
-        message: "相手にひとこと話しかけると、ちょっといいことがあるかも！"
-      },
-      {
-        name: "超大吉！",
-        message: "今日は最強！ふたりで楽しいことしよー！！"
-      }
+      { name: "大吉", message: "今日はいいことありそう！いっぱい笑って過ごそう！" },
+      { name: "大吉", message: "好きなことを思いっきり楽しむ日！ゲームするのもいいかも！" },
+      { name: "中吉", message: "何気ない時間が一番楽しい日。のんびり話そ！" },
+      { name: "中吉", message: "ちょっと疲れたら休憩！無理しないのも大事だよ！" },
+      { name: "小吉", message: "今日はゆっくりいこう！ちゃんと休めたら100点！" },
+      { name: "吉", message: "おいしいものを食べると運気アップ！おやつ食べよー！" },
+      { name: "吉", message: "相手にひとこと話しかけると、ちょっといいことがあるかも！" },
+      { name: "超大吉！", message: "今日は最強！ふたりで楽しいことしよー！！" }
     ];
 
     function drawFortune() {
-      const fortune =
-        fortunes[Math.floor(Math.random() * fortunes.length)];
-
+      const fortune = fortunes[Math.floor(Math.random() * fortunes.length)];
       document.getElementById("fortuneResult").innerHTML =
-        '<div class="fortune-name">' +
-        fortune.name +
-        '</div>' +
-        fortune.message;
+        '<div class="fortune-name">' + fortune.name + '</div>' + fortune.message;
     }
 
-
-    // 指輪の隠し演出
     function openSecret() {
       document.getElementById("secret").style.display = "flex";
     }
-
     function closeSecret() {
       document.getElementById("secret").style.display = "none";
     }
-
   </script>
-
 </body>
 </html>
