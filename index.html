@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="仲良しふたりの今までとこれから💐">
-  <title>since 0808-谷井田⇔大山🤍❤</title>
+  <title>since 0808-ふたりの今までとこれから</title>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -100,6 +100,13 @@
       box-shadow: 0 5px 20px rgba(120,80,80,0.08);
     }
     .card h2 { margin-top: 0; font-size: 17px; font-weight: normal; }
+    .today-anniversary {
+      margin: 10px 0 0;
+      font-family: Georgia, "Yu Mincho", serif;
+      font-size: clamp(15px, 3.8vw, 19px);
+      line-height: 1.7;
+      color: #9c747a;
+    }
     .fortune-hint { font-size: 13px; color: #9b8585; }
     button {
       border: none;
@@ -180,8 +187,12 @@
         <div class="counter-title">付き合ってから</div>
         <div class="days" id="loveDays">0</div>
         <div class="days-label">DAYS</div>
-        <time class="counter-date" datetime="2022-09-09">2022.09.09</time>
+        <time class="counter-date" datetime="2022-09-08">2022.09.08</time>
       </div>
+    </section>
+    <section class="card" aria-labelledby="today-title">
+      <h2 id="today-title">今日は何の日？🗓️</h2>
+      <p class="today-anniversary" id="todayAnniversary" role="status"></p>
     </section>
     <section class="card">
       <h2>今日の運勢🔮</h2>
@@ -208,7 +219,7 @@
   </div>
   <script>
     const meetDate = new Date(2022, 7, 8);
-    const loveDate = new Date(2022, 8, 9);
+    const loveDate = new Date(2022, 8, 8);
 
     function calculateDays(startDate) {
       const now = new Date();
@@ -220,6 +231,26 @@
       calculateDays(meetDate).toLocaleString();
     document.getElementById("loveDays").textContent =
       calculateDays(loveDate).toLocaleString();
+
+    function updateAnniversary() {
+      const parts = new Intl.DateTimeFormat("en-US", {
+        timeZone: "Asia/Tokyo", year: "numeric", month: "numeric", day: "numeric"
+      }).formatToParts(new Date());
+      const value = type => Number(parts.find(part => part.type === type).value);
+      const year = value("year");
+      const month = value("month");
+      const day = value("day");
+      const label = document.getElementById("todayAnniversary");
+      if (day === 8 && (year > 2022 || month >= 9)) {
+        const metMonths = (year - 2022) * 12 + month - 8;
+        const loveMonths = (year - 2022) * 12 + month - 9;
+        label.textContent = `出会って${metMonths}ヶ月＆付き合って${loveMonths}ヶ月💖`;
+      } else {
+        label.textContent = "今日はどんな日になるかな？💐";
+      }
+    }
+    updateAnniversary();
+    setInterval(updateAnniversary, 60000);
 
     const photoTrigger = document.getElementById("photoTrigger");
     const photoEmojis = ["💐", "🤍", "🩷", "🌟", "💍", "✨"];
