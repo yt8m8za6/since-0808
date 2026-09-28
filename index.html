@@ -239,17 +239,17 @@
       <p class="today-anniversary" id="todayAnniversary" role="status"></p>
     </section>
     <section class="card">
-      <h2>今日の運勢🔮</h2>
-      <p class="fortune-hint">ふたりそれぞれ、1日1回の運試し🌟</p>
+      <h2>ふたりの運勢🔮</h2>
+      <p class="fortune-hint">1日1回の運試し🌟ふたりで別々の結果が出るよ😁</p>
       <div class="fortune-panel">
         <h3>みゆ🥺のおみくじ</h3>
-        <p class="fortune-hint">全11種類から今日の運勢を引いてね💐</p>
+        <p class="fortune-hint">結果は全10種類以上！？みゆ専用おみくじ🔯✨️</p>
         <strong id="fortune-miyu">まだ引いてないよ</strong>
         <button type="button" id="fortuneButton-miyu" disabled>みゆがおみくじを引く🔮</button>
       </div>
       <div class="fortune-panel">
         <h3>ゆぴ😼のおみくじ</h3>
-        <p class="fortune-hint">いまは仮の結果入り。あとで一緒に作ろうね🤍</p>
+        <p class="fortune-hint">現在工事中💨</p>
         <strong id="fortune-yupi">まだ引いてないよ</strong>
         <button type="button" id="fortuneButton-yupi" disabled>ゆぴがおみくじを引く🔮</button>
       </div>
@@ -257,7 +257,7 @@
     </section>
     <section class="card">
       <h2>いまの気分💭</h2>
-      <p class="fortune-hint">自分を選んで、いまの気分を教えてね。何回でも変えられるよ💐</p>
+      <p class="fortune-hint">自分を選んでから、いまの気分をタップ！1日何回でも変えられるよ✌</p>
       <div class="person-choice" role="group" aria-label="気分を伝える人">
         <button type="button" class="chip person-button" data-person="miyu">みゆ🥺</button>
         <button type="button" class="chip person-button" data-person="yupi">ゆぴ😼</button>
@@ -268,8 +268,8 @@
         <div><input id="customMood" type="text" maxlength="10" placeholder="いまの気分" autocomplete="off" required><button type="submit">送る💌</button></div>
       </form>
       <div class="shared-status">
-        <div><span>みゆ🥺の気分</span><strong id="mood-miyu">まだないしょ💭</strong></div>
-        <div><span>ゆぴ😼の気分</span><strong id="mood-yupi">まだないしょ💭</strong></div>
+        <div><span>みゆ🥺の気分</span><strong id="mood-miyu">ないしょ🤫</strong></div>
+        <div><span>ゆぴ😼の気分</span><strong id="mood-yupi">ないしょ🤫</strong></div>
       </div>
       <p class="shared-help" id="syncStatus" role="status"></p>
       <details class="share-settings">
@@ -399,8 +399,8 @@
     const sharedConfigKey = "since0808-supabase-key";
     const people = ["miyu", "yupi"];
     const moods = [
-      "元気いっぱい🌟", "眠いかも💤", "ゲームしよ🎮️", "くっつきたい🫂",
-      "一人の時間☕", "お腹すいた😖", "早く話したい📞", "聞いてほしい🖐🏻"
+      "元気もりもり💪", "ねゆすぎる💤", "お腹すいた🫥", "おやつタイム🍩🤍",
+      "ちょっと聞いてぇ🖐🏻", "れおちタイム🐶", "ホルモン❤️‍🩹", "誰も俺のことなんて好きじゃねえんだ😖"
     ];
     const fortuneButtons = {
       miyu: document.getElementById("fortuneButton-miyu"),
@@ -432,7 +432,7 @@
         document.getElementById(`fortune-${person}`).textContent =
           result?.day === date ? `${result.title}：${result.message}` : "まだ引いてないよ";
         document.getElementById(`mood-${person}`).textContent =
-          moodState[person]?.mood || "まだないしょ💭";
+          moodState[person]?.mood || "ないしょ🤫";
       }
       document.querySelectorAll(".person-button").forEach(button => {
         const person = button.dataset.person;
