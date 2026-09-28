@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="仲良しふたりの今までとこれから💐">
   <title>since 0808-ふたりの今までとこれから</title>
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:url" content="https://yt8m8za6.github.io/since-0808/">
+  <meta property="og:title" content="since 0808-ふたりの今までとこれから">
+  <meta property="og:description" content="仲良しふたりの今までとこれから💐">
+  <meta property="og:image" content="https://yt8m8za6.github.io/since-0808/top.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1536">
+  <meta property="og:image:height" content="1008">
+  <meta name="twitter:card" content="summary_large_image">
   <style>
     * { box-sizing: border-box; }
     body {
@@ -108,6 +118,40 @@
       color: #9c747a;
     }
     .fortune-hint { font-size: 13px; color: #9b8585; }
+    .fortune-panel {
+      margin-top: 15px; padding: 18px 14px; border: 1px solid #f1dfe1;
+      border-radius: 18px; background: #fffafa;
+    }
+    .fortune-panel h3 { margin: 0 0 5px; font-size: 16px; font-weight: normal; color: #916d74; }
+    .fortune-panel strong { display: block; min-height: 1.6em; margin: 12px 0; font-size: 14px; line-height: 1.7; color: #765e62; }
+    .person-choice, .mood-choices { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 14px 0; }
+    .chip {
+      padding: 9px 14px;
+      border: 1px solid #dfc5c8;
+      border-radius: 25px;
+      background: #fffaf9;
+      color: #765e62;
+      font-size: 13px;
+    }
+    .chip.selected { background: #a6777e; color: white; border-color: #a6777e; }
+    .shared-status { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 17px; }
+    .shared-status > div { padding: 14px 9px; border-radius: 16px; background: #fbf3f3; overflow-wrap: anywhere; }
+    .shared-status span { display: block; color: #aa8c8c; font-size: 11px; }
+    .shared-status strong { display: block; margin-top: 8px; color: #765e62; font-size: 13px; line-height: 1.6; }
+    .shared-help { min-height: 1.5em; color: #a6777e; font-size: 12px; line-height: 1.6; }
+    .custom-mood { margin-top: 15px; }
+    .custom-mood label { display: block; margin-bottom: 8px; color: #9b8585; font-size: 12px; }
+    .custom-mood div { display: flex; gap: 8px; }
+    .custom-mood input, .share-settings input {
+      width: 100%; min-width: 0; padding: 11px; border: 1px solid #dfc5c8;
+      border-radius: 12px; background: white; color: #594b4b; font: inherit;
+    }
+    .custom-mood button { padding: 11px 13px; white-space: nowrap; }
+    .share-settings { margin-top: 20px; font-size: 12px; text-align: left; color: #765e62; }
+    .share-settings summary { cursor: pointer; }
+    .share-settings label { display: block; margin: 12px 0; }
+    .share-settings input { display: block; margin-top: 5px; }
+    .share-settings code { overflow-wrap: anywhere; }
     button {
       border: none;
       background: #d8aeb4;
@@ -196,9 +240,47 @@
     </section>
     <section class="card">
       <h2>今日の運勢🔮</h2>
-      <p class="fortune-hint">1日1回の運試し🌟結果は全10種類以上！？</p>
-      <button type="button" id="fortuneButton" onclick="drawFortune()">引いてみる！</button>
-      <div id="fortuneResult"></div>
+      <p class="fortune-hint">ふたりそれぞれ、1日1回の運試し🌟</p>
+      <div class="fortune-panel">
+        <h3>みゆ🥺のおみくじ</h3>
+        <p class="fortune-hint">全11種類から今日の運勢を引いてね💐</p>
+        <strong id="fortune-miyu">まだ引いてないよ</strong>
+        <button type="button" id="fortuneButton-miyu" disabled>みゆがおみくじを引く🔮</button>
+      </div>
+      <div class="fortune-panel">
+        <h3>ゆぴ😼のおみくじ</h3>
+        <p class="fortune-hint">いまは仮の結果入り。あとで一緒に作ろうね🤍</p>
+        <strong id="fortune-yupi">まだ引いてないよ</strong>
+        <button type="button" id="fortuneButton-yupi" disabled>ゆぴがおみくじを引く🔮</button>
+      </div>
+      <p class="shared-help" id="fortuneHelp" role="status"></p>
+    </section>
+    <section class="card">
+      <h2>いまの気分💭</h2>
+      <p class="fortune-hint">自分を選んで、いまの気分を教えてね。何回でも変えられるよ💐</p>
+      <div class="person-choice" role="group" aria-label="気分を伝える人">
+        <button type="button" class="chip person-button" data-person="miyu">みゆ🥺</button>
+        <button type="button" class="chip person-button" data-person="yupi">ゆぴ😼</button>
+      </div>
+      <div class="mood-choices" id="moodChoices"></div>
+      <form class="custom-mood" id="customMoodForm">
+        <label for="customMood">自分の言葉で書く📝（10文字まで）</label>
+        <div><input id="customMood" type="text" maxlength="10" placeholder="いまの気分" autocomplete="off" required><button type="submit">送る💌</button></div>
+      </form>
+      <div class="shared-status">
+        <div><span>みゆ🥺の気分</span><strong id="mood-miyu">まだないしょ💭</strong></div>
+        <div><span>ゆぴ😼の気分</span><strong id="mood-yupi">まだないしょ💭</strong></div>
+      </div>
+      <p class="shared-help" id="syncStatus" role="status"></p>
+      <details class="share-settings">
+        <summary>ふたりの共有設定</summary>
+        <p>SupabaseのプロジェクトURLとPublishable keyを入力してね。</p>
+        <label>プロジェクトURL<input id="supabaseUrl" type="url" autocomplete="off" placeholder="https://...supabase.co"></label>
+        <label>Publishable key<input id="supabaseKey" type="text" autocomplete="off" spellcheck="false" placeholder="sb_publishable_..."></label>
+        <button type="button" id="saveSupabase">接続する</button>
+        <p class="shared-help" id="setupMessage" role="status"></p>
+        <p>あなたのユーザーID：<code id="memberId">接続後に表示</code></p>
+      </details>
     </section>
     <div class="ring-area">
       <div class="ring" onclick="openSecret()">💍</div>
@@ -234,6 +316,14 @@
 
     const dailyAnniversaries = ["元日","書き初め","ひとみの日","石の日","いちごの日","色の日","七草","イヤホンの日","とんちの日","110番の日","鏡開き","成人の日","咸臨丸出航記念日","愛と希望と勇気の日","半襟の日","禁酒の日","防災とボランティアの日","都バスの日","家庭用消火器点検の日","海外団体旅行の日","料理番組の日","カレーの日","電子メールの日","法律扶助の日","日本最低気温の日","文化財防火デー","国旗制定記念日","衣類乾燥機の日","タウン情報の日","3分間電話の日","生命保険の日","テレビ放送記念日","お麩の日","節分","立春","プロ野球の日","海苔の日","北方領土の日","針供養","ふくの日","ふきのとうの日","建国記念の日","レトルトカレーの日","苗字制定記念日","バレンタインデー","春一番名づけの日","天気図記念日","天使の囁き記念日","嫌煙運動の日","雨水","アレルギーの日","日刊新聞創刊の日","猫の日","天皇誕生日","月光仮面登場の日","夕刊紙の日","脱出の日","冬の恋人の日","ビスケットの日","うるう日","ビキニ・デー","ミニチュアの日","ひな祭り","ミシンの日","サンゴの日","世界一周記念日","消防記念日","みつばちの日","雑穀の日","サボテンの日","おくる防災の日","サイフの日","青函トンネル開業記念日","ホワイトデー","靴の日","国立公園指定記念日","漫画週刊誌の日","点字ブロックの日","ミュージックの日","春分の日","国際人種差別撤廃デー","世界水の日","世界気象デー","世界結核デー","電気記念日","カチューシャの唄の日","さくらの日","三つ葉の日","マリモの日","旧国立競技場落成記念日","教育基本法・学校教育法公布の日","トレーニングの日","国際子どもの本の日","日本橋開通記念日","あんぱんの日","デビューの日","新聞をヨム日","世界保健デー","タイヤの日","大仏の日","駅弁の日","メートル法公布記念日","パンの記念日","喫茶店の日","オレンジデー","ヘリコプターの日","女子マラソンの日","恐竜の日","発明の日","地図の日","郵政記念日","民放の日","アースデイ","世界図書・著作権デー","植物学の日","歩道橋の日","世界知的所有権の日","婦人警官記念日","サンフランシスコ平和条約発効記念日","昭和の日","図書館記念日","日本赤十字社創立記念日","歯科医師記念日","憲法記念日","みどりの日","こどもの日","コロッケの日","コナモンの日","ゴーヤーの日","黒板の日","母の日","長良川鵜飼開き","海上保安の日","メイストームデー","温度計の日","沖縄本土復帰記念日","旅の日","世界電気通信の日","18リットル缶の日","ボクシングの日","東京港開港記念日","小学校開校の日","国際生物多様性の日","キスの日","ゴルフ場記念日","広辞苑の日","東名高速道路全通記念日","百人一首の日","ゴルフ記念日","こんにゃくの日","消費者の日","世界禁煙デー","電波の日","横浜港開港記念日","測量の日","ローメンの日","環境の日","楽器の日","緑内障を考える日","学校の安全確保・安全管理の日","我が家のカギを見直すロックの日","時の記念日","傘の日","恋人の日","小さな親切の日","世界献血者デー","暑中見舞いの日","和菓子の日","薩摩の日","海外移住の日","朗読の日","世界難民の日","父の日","かにの日","沖縄慰霊の日","空飛ぶ円盤記念日","住宅デー","露天風呂の日","ちらし寿司の日","貿易記念日","佃煮の日","トランジスタの日","童謡の日","うどんの日","ソフトクリームの日","梨の日","農林水産省発足記念日","公認会計士の日","七夕","チキン南蛮の日","ジェットコースター記念日","納豆の日","養殖真珠発明記念日","人間ドックの日","日本標準時制定記念日","ゼリーの日","ファミコンの日","国土交通Day","漫画の日","ネルソン・マンデラ国際デー","女性大臣の日","海の日","日本三景の日","下駄の日","文月ふみの日","劇画の日","かき氷の日","幽霊の日","スイカの日","菜っ葉の日","アマチュア無線の日","プロレス記念日","蓄音機の日","水の日","ハーブの日","はちみつの日","橋の日","タクシーの日","広島平和記念日","鼻の日","そろばんの日","長崎原爆の日","道の日","山の日","太平洋横断記念日","函館夜景の日","専売特許の日","終戦記念日","電子コミックの日","プロ野球ナイター記念日","高校野球記念日","バイクの日","交通信号の日","献血の日","チンチン電車の日","白虎隊の日","歯ブラシの日","即席ラーメン記念日","ユースホステルの日","「男はつらいよ」の日","民放テレビスタートの日","焼き肉の日","ハッピーサンシャインデー","野菜の日","防災の日","宝くじの日","グミの日","くしの日","クリーン・コール・デー","黒豆の日","クリーナーの日","国際識字デー","救急の日","下水道の日","警察相談の日","宇宙の日","世界の法の日","メンズバレンタインデー","スカウトの日","国際オゾン層保護デー","モノレール開業記念日","かいわれ大根の日","苗字の日","空の日","敬老の日","孤児院の日","秋分の日","歯科技工士記念日","10円カレーの日","ワープロ記念日","世界観光の日","パソコンの日","クリーニングの日","クレーンの日","コーヒーの日","豆腐の日","登山の日","イワシの日","時刻表記念日","国際協力の日","ミステリー記念日","骨と関節の日","塾の日","釣りの日","安全・安心なまちづくりの日","豆乳の日","スポーツの日","鉄道の日","きのこの日","世界食料デー","貯蓄の日","統計の日","海外旅行の日","新聞広告の日","国際反戦デー","平安遷都の日","電信電話記念日","国連デー","世界パスタデー","柿の日","テディベアズ・デー","速記記念日","おしぼりの日","初恋の日","ハロウィーン","寿司の日","キッチン・バスの日","文化の日","ユネスコ憲章記念日","いいりんごの日","アパート記念日","鍋の日","いい歯の日","119番の日","エレベーターの日","サッカーの日","皮膚の日","うるしの日","世界糖尿病デー","七五三","いいいろ塗装の日","将棋の日","土木の日","農業協同組合法公布記念日","世界子どもの日","世界テレビ・デー","いい夫婦の日","勤労感謝の日","鰹節の日","OLの日","いい風呂の日","ノーベル賞制定記念日","税関記念日","いい肉の日","本みりんの日","映画の日","日本人宇宙飛行記念日","国際障害者デー","破傷風血清療法の日","国際ボランティアデー","音の日","クリスマスツリーの日","太平洋戦争開戦日","障害者の日","世界人権デー","胃腸の日","漢字の日","ビタミンの日","南極の日","観光バス記念日","紙の記念日","飛行機の日","国連加盟記念日","日本初飛行の日","ブリの日","遠距離恋愛の日","冬至","東京タワー完成の日","クリスマス・イブ","クリスマス","プロ野球誕生の日","ピーターパンの日","ディスクジョッキーの日","清水トンネル貫通記念日","地下鉄開業の日","大みそか"];
 
+    const birthdays = {
+      "6-21": "あやみ誕生日🎂🩷",
+      "12-9": "ありす誕生日🎂🤍",
+      "2-22": "れおち誕生日🐶💫",
+      "8-22": "あいちゃん誕生日🐶💫",
+      "10-31": "みじゅ誕生日👶💘"
+    };
+
     function updateAnniversary() {
       const parts = new Intl.DateTimeFormat("en-US", {
         timeZone: "Asia/Tokyo", year: "numeric", month: "numeric", day: "numeric"
@@ -243,7 +333,10 @@
       const month = value("month");
       const day = value("day");
       const label = document.getElementById("todayAnniversary");
-      if (day === 8 && (year > 2022 || month >= 9)) {
+      const birthday = birthdays[`${month}-${day}`];
+      if (birthday) {
+        label.textContent = `${month}月${day}日は${birthday}`;
+      } else if (day === 8 && (year > 2022 || month >= 9)) {
         const metMonths = (year - 2022) * 12 + month - 8;
         const loveMonths = (year - 2022) * 12 + month - 9;
         label.textContent = `出会って${metMonths}ヶ月＆付き合って${loveMonths}ヶ月💖`;
@@ -275,7 +368,8 @@
       }
     });
 
-    const fortunes = [
+    const fortunesByPerson = {
+      miyu: [
       { name: "大吉", message: "最高の運勢！良いことしかない✌" },
       { name: "中吉", message: "かなり良い感じ！電車で頭ゴツンしない😆" },
       { name: "中吉", message: "結構良い運勢✨️定時を過ぎても起きてられるかも！？😳" },
@@ -287,59 +381,263 @@
       { name: "小吉", message: "ちょっといまいい？でもれおちがご飯モリモリ食べるかも🐶" },
       { name: "中吉", message: "良い運勢🎀欲しかったものがZOZOで安くなってるかも！？" },
       { name: "小吉", message: "疲れ気味？でも大丈夫🍵こんなときはスパダリがいつもより優しいよ😆" }
-    ];
+      ],
+      yupi: [
+        { name: "超大吉💮", message: "今日は絶好調！好きな人にうれしい報告ができるかも😆" },
+        { name: "大吉", message: "やりたいことがサクサク進む日✨" },
+        { name: "中吉", message: "ちょっといい知らせが届きそう📮" },
+        { name: "中吉", message: "おやつがいつもよりおいしい日🍰" },
+        { name: "吉", message: "好きな音楽が今の気分にぴったり🎵" },
+        { name: "吉", message: "のんびり話すと元気が出る日☕" },
+        { name: "小吉", message: "疲れたらひと休み。休むのも上手な一日🍵" },
+        { name: "凶", message: "うっかりに注意😱でも深呼吸すれば大丈夫🫶" }
+      ]
+    };
 
     const fortuneStorageKey = "since0808-fortune-v1";
-    const fortuneButton = document.getElementById("fortuneButton");
-    const fortuneResult = document.getElementById("fortuneResult");
+    const sharedConfigUrl = "since0808-supabase-url";
+    const sharedConfigKey = "since0808-supabase-key";
+    const people = ["miyu", "yupi"];
+    const moods = [
+      "元気いっぱい🌟", "眠いかも💤", "ゲームしよ🎮️", "くっつきたい🫂",
+      "一人の時間☕", "お腹すいた😖", "早く話したい📞", "聞いてほしい🖐🏻"
+    ];
+    const fortuneButtons = {
+      miyu: document.getElementById("fortuneButton-miyu"),
+      yupi: document.getElementById("fortuneButton-yupi")
+    };
+    const fortuneHelp = document.getElementById("fortuneHelp");
+    const syncStatus = document.getElementById("syncStatus");
+    let selectedPerson = "";
+    let assignedPerson = "";
+    let sharedDb = null;
+    let sharingReady = false;
+    let drawing = false;
+    let savingMood = false;
+    let fortuneState = {};
+    let moodState = {};
 
     function fortuneDay() {
-      return new Intl.DateTimeFormat("en-CA", {
+      const parts = new Intl.DateTimeFormat("en-US", {
         timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit"
-      }).format(new Date());
+      }).formatToParts(new Date());
+      const part = type => parts.find(item => item.type === type).value;
+      return `${part("year")}-${part("month")}-${part("day")}`;
     }
 
-    function savedFortune() {
-      try { return JSON.parse(localStorage.getItem(fortuneStorageKey) || "null"); }
-      catch { return null; }
-    }
-
-    function showFortune(fortune) {
-      fortuneResult.replaceChildren();
-      const name = document.createElement("div");
-      name.className = "fortune-name";
-      name.textContent = fortune.name;
-      fortuneResult.append(name, document.createTextNode(fortune.message));
-      fortuneButton.disabled = true;
-      fortuneButton.textContent = "今日はもう引いたよ🌟";
-    }
-
-    function refreshFortune() {
-      const saved = savedFortune();
-      if (saved && saved.day === fortuneDay() &&
-          Number.isInteger(saved.index) && fortunes[saved.index]) {
-        showFortune(fortunes[saved.index]);
-      } else {
-        fortuneResult.replaceChildren();
-        fortuneButton.disabled = false;
-        fortuneButton.textContent = "引いてみる！";
+    function renderShared() {
+      const date = fortuneDay();
+      for (const person of people) {
+        const result = fortuneState[person];
+        document.getElementById(`fortune-${person}`).textContent =
+          result?.day === date ? `${result.title}：${result.message}` : "まだ引いてないよ";
+        document.getElementById(`mood-${person}`).textContent =
+          moodState[person]?.mood || "まだないしょ💭";
+      }
+      document.querySelectorAll(".person-button").forEach(button => {
+        const person = button.dataset.person;
+        button.classList.toggle("selected", selectedPerson === person);
+        button.disabled = !!assignedPerson && assignedPerson !== person;
+        button.setAttribute("aria-pressed", String(selectedPerson === person));
+      });
+      for (const person of people) {
+        const alreadyDrawn = fortuneState[person]?.day === date;
+        fortuneButtons[person].disabled = !sharingReady || assignedPerson !== person || alreadyDrawn || drawing;
+        fortuneButtons[person].textContent = alreadyDrawn
+          ? "今日はもう引いたよ🌟"
+          : `${person === "miyu" ? "みゆ" : "ゆぴ"}がおみくじを引く🔮`;
       }
     }
 
-    function drawFortune() {
-      if (savedFortune()?.day === fortuneDay()) return;
-      const index = Math.floor(Math.random() * fortunes.length);
+    document.querySelectorAll(".person-button").forEach(button => {
+      button.addEventListener("click", () => {
+        if (assignedPerson && button.dataset.person !== assignedPerson) return;
+        selectedPerson = button.dataset.person;
+        renderShared();
+      });
+    });
+
+    for (const mood of moods) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "chip";
+      button.textContent = mood;
+      button.addEventListener("click", () => saveMood(mood));
+      document.getElementById("moodChoices").append(button);
+    }
+
+    async function loadShared() {
+      if (!sharedDb || !assignedPerson) return;
+      const [moodsResult, fortunesResult] = await Promise.all([
+        sharedDb.from("since0808_moods").select("player,mood"),
+        sharedDb.from("since0808_fortunes").select("player,day,title,message").eq("day", fortuneDay())
+      ]);
+      if (moodsResult.error) throw moodsResult.error;
+      if (fortunesResult.error) throw fortunesResult.error;
+      moodState = Object.fromEntries(moodsResult.data.map(row => [row.player, row]));
+      fortuneState = Object.fromEntries(fortunesResult.data.map(row => [row.player, row]));
+      renderShared();
+    }
+
+    async function drawFortune(person) {
+      if (!sharingReady || assignedPerson !== person || drawing) return;
+      const day = fortuneDay();
+      if (fortuneState[person]?.day === day) return;
+      drawing = true;
+      renderShared();
+      const results = fortunesByPerson[person];
+      const fortune = results[Math.floor(Math.random() * results.length)];
+      const row = { player: person, day, title: fortune.name, message: fortune.message };
       try {
-        localStorage.setItem(fortuneStorageKey, JSON.stringify({ day: fortuneDay(), index }));
-      } catch {
-        fortuneResult.textContent = "保存できなかったよ。ブラウザーの設定を確認してね。";
+        const { error } = await sharedDb.from("since0808_fortunes").insert(row);
+        if (error) throw error;
+        fortuneState[person] = row;
+        fortuneHelp.textContent = "結果が出たよ！また明日引いてね💖";
+      } catch (error) {
+        fortuneHelp.textContent = "引けなかったよ。接続を確認してね。";
+        try { await loadShared(); } catch { /* 再読み込みで復旧できる */ }
+      } finally {
+        drawing = false;
+        renderShared();
+      }
+    }
+    for (const person of people) {
+      fortuneButtons[person].addEventListener("click", () => drawFortune(person));
+    }
+
+    async function saveMood(mood) {
+      if (!sharingReady || !assignedPerson) {
+        syncStatus.textContent = "まず共有設定を済ませてね。";
+        return false;
+      }
+      if (savingMood) return false;
+      savingMood = true;
+      try {
+        const { error } = await sharedDb.from("since0808_moods").upsert(
+          { player: assignedPerson, mood, updated_at: new Date().toISOString() },
+          { onConflict: "player" }
+        );
+        if (error) throw error;
+        moodState[assignedPerson] = { mood };
+        renderShared();
+        syncStatus.textContent = "気分を届けたよ💐";
+        return true;
+      } catch (error) {
+        syncStatus.textContent = "気分を送れなかったよ。接続を確認してね。";
+        return false;
+      } finally {
+        savingMood = false;
+      }
+    }
+
+    document.getElementById("customMoodForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      const input = document.getElementById("customMood");
+      const mood = input.value.trim();
+      if (!mood || Array.from(mood).length > 10) {
+        syncStatus.textContent = "気分は10文字までで入力してね。";
         return;
       }
-      showFortune(fortunes[index]);
+      if (await saveMood(mood)) input.value = "";
+    });
+
+    async function migrateTodaysFortune() {
+      if (assignedPerson !== "miyu") return;
+      if (fortuneState[assignedPerson]?.day === fortuneDay()) return;
+      try {
+        const saved = JSON.parse(localStorage.getItem(fortuneStorageKey) || "null");
+        if (saved?.day !== fortuneDay() || !Number.isInteger(saved.index) ||
+            !fortunesByPerson.miyu[saved.index]) return;
+        const fortune = fortunesByPerson.miyu[saved.index];
+        const { error } = await sharedDb.from("since0808_fortunes").insert({
+          player: assignedPerson, day: saved.day, title: fortune.name, message: fortune.message
+        });
+        if (!error) await loadShared();
+      } catch { /* 以前の端末保存がない場合は何もしない */ }
     }
 
-    refreshFortune();
-    setInterval(refreshFortune, 60000);
+    async function connectSharing() {
+      let url = "", key = "";
+      try {
+        url = localStorage.getItem(sharedConfigUrl) || "";
+        key = localStorage.getItem(sharedConfigKey) || "";
+      } catch { /* 保存できないブラウザーでは接続できない */ }
+      document.getElementById("supabaseUrl").value = url;
+      document.getElementById("supabaseKey").value = key;
+      if (!url || !key) {
+        syncStatus.textContent = "ふたりの共有設定をすると気分と運勢が表示されるよ。";
+        fortuneHelp.textContent = "共有設定を済ませてから引いてね。";
+        return;
+      }
+      try {
+        syncStatus.textContent = "接続中…";
+        const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm");
+        sharedDb = createClient(url, key);
+        const sessionResult = await sharedDb.auth.getSession();
+        if (sessionResult.error) throw sessionResult.error;
+        let session = sessionResult.data.session;
+        if (!session) {
+          const login = await sharedDb.auth.signInAnonymously();
+          if (login.error) throw login.error;
+          session = login.data.session;
+        }
+        const userId = session?.user?.id;
+        if (!userId) throw new Error("ユーザーIDを取得できませんでした。");
+        document.getElementById("memberId").textContent = userId;
+        const member = await sharedDb.from("since0808_members")
+          .select("player").eq("user_id", userId).maybeSingle();
+        if (member.error) throw member.error;
+        if (!member.data) {
+          syncStatus.textContent = "ユーザーIDを発行したよ。ふたり分を登録したらページを更新してね。";
+          document.getElementById("setupMessage").textContent = "このIDを控えて、共有用SQLにふたり分登録してね。";
+          return;
+        }
+        assignedPerson = member.data.player;
+        selectedPerson = assignedPerson;
+        await loadShared();
+        await migrateTodaysFortune();
+        sharingReady = true;
+        renderShared();
+        syncStatus.textContent = "ふたりの気分と運勢を共有中💐";
+        fortuneHelp.textContent = "みゆ🥺とゆぴ😼、それぞれ1日1回引けるよ。";
+        sharedDb.channel("since0808-updates")
+          .on("postgres_changes", { event: "*", schema: "public", table: "since0808_moods" },
+            () => loadShared().catch(() => {}))
+          .on("postgres_changes", { event: "*", schema: "public", table: "since0808_fortunes" },
+            () => loadShared().catch(() => {}))
+          .subscribe();
+        setInterval(() => loadShared().catch(() => {}), 30000);
+        document.addEventListener("visibilitychange", () => {
+          if (!document.hidden) loadShared().catch(() => {});
+        });
+      } catch (error) {
+        sharingReady = false;
+        syncStatus.textContent = "共有に接続できなかったよ。設定を確認してね。";
+        document.getElementById("setupMessage").textContent = error.message || String(error);
+        fortuneHelp.textContent = "接続できたら引けるよ。";
+        renderShared();
+      }
+    }
+
+    document.getElementById("saveSupabase").addEventListener("click", () => {
+      const url = document.getElementById("supabaseUrl").value.trim().replace(/\/$/, "");
+      const key = document.getElementById("supabaseKey").value.trim();
+      if (!/^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(url) || !key.startsWith("sb_publishable_")) {
+        document.getElementById("setupMessage").textContent = "プロジェクトURLとPublishable keyを確認してね。";
+        return;
+      }
+      try {
+        localStorage.setItem(sharedConfigUrl, url);
+        localStorage.setItem(sharedConfigKey, key);
+        location.reload();
+      } catch {
+        document.getElementById("setupMessage").textContent = "設定を保存できなかったよ。ブラウザーを確認してね。";
+      }
+    });
+
+    renderShared();
+    connectSharing();
+    setInterval(renderShared, 60000);
 
     function openSecret() {
       document.getElementById("secret").style.display = "flex";
